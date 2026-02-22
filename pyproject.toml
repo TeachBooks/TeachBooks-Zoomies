@@ -9,8 +9,7 @@ authors = [{ name = "Fabio Bonassi", email = "fabio.bonassi@polimi.it" }]
 description = "A Sphinx extension to integrate Viewer.js for image zooming into Sphinx documentation (designed for JupyterBook v1)."
 readme = "README.md"
 dependencies = [
-    "sphinx",
-    "<other-package-dependencies>"
+    "sphinx"
 ]
 requires-python = ">=3.10"
 
