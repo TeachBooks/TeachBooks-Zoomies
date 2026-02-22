@@ -11,7 +11,7 @@ def setup(app):
     app.add_config_value('zoomies_bg_color_light', 'rgba(255, 255, 255, 0.95)', 'html')
     app.add_config_value('zoomies_bg_color_dark', '#333', 'html')
     app.add_config_value('zoomies_bg_apply_to_img', True, 'html')
-    app.add_config_value('zoomies_invert_colors', True, 'html')
+    app.add_config_value('zoomies_invert_colors', False, 'html')
     app.add_config_value('zoomies_toolbar', ["zoomIn", "zoomOut", "oneToOne", "reset"], 'html')
     app.add_config_value('zoomies_best_fit', 70, 'html')
 

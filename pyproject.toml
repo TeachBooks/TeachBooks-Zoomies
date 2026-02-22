@@ -1,30 +1,18 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [project]
-name = "jb1-zoomies"
-version = "0.2.1"
+name = "teachbooks-zoomies"
+dynamic=["version"]
+authors = [{ name = "Fabio Bonassi", email = "fabio.bonassi@polimi.it" }]
 description = "A Sphinx extension to integrate Viewer.js for image zooming into Sphinx documentation (designed for JupyterBook v1)."
 readme = "README.md"
-authors = [{ name = "Fabio Bonassi", email = "fabio.bonassi@polimi.it" }]
-license = "MIT"
-classifiers = [
-    "Framework :: Sphinx",
-    "Framework :: Sphinx :: Extension",
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
-requires-python = ">=3.6"
 dependencies = [
-    "sphinx>=4.0",
+    "sphinx"
 ]
+requires-python = ">=3.10"
 
-[project.urls]
-Homepage = "https://github.com/bonassifabio/jb1-zoomies"
-
-[tool.setuptools]
-packages = ["jb1_zoomies", "jb1_zoomies.static"]
-
-[tool.setuptools.package-data]
-jb1_zoomies = ["static/*"]
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/teachbooks_zoomies/_version.py"
