@@ -15,4 +15,4 @@ requires-python = ">=3.10"
 
 [tool.hatch]
 version.source = "vcs"
-build.hooks.vcs.version-file = "src/teachbooks-zoomies/_version.py"
+build.hooks.vcs.version-file = "src/teachbooks_zoomies/_version.py"
