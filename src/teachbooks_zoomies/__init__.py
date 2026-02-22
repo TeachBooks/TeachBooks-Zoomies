@@ -20,7 +20,6 @@ def setup(app):
     app.connect('html-page-context', inject_assets)
     
     return {
-        'version': '0.2',
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
