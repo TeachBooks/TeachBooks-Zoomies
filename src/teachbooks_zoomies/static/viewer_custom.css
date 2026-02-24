@@ -10,9 +10,22 @@
     color: var(--zoomies-caption-color) !important;
 }
 
+/* Hide the title when it's empty to avoid unnecessary space/padding */
+.viewer-title:empty {
+    display: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 /* Footer rendered below the canvas with a solid background */
 .viewer-container .viewer-footer {
     background-color: var(--pst-color-background);
+}
+
+/* Ensure the toolbar has enough padding, especially when title is empty */
+.viewer-footer .viewer-toolbar {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
 }
 
 /* --- Dynamic Background Application --- */
