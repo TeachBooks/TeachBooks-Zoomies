@@ -4,15 +4,28 @@
     line-height: 1.4;
     font-weight: 500;
     white-space: normal;
-    padding-bottom: 10px;
+    padding: 6px 16px 10px !important;
     opacity: 1 !important;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: color 0.3s ease;
     color: var(--zoomies-caption-color) !important;
+}
 
-    /* Halo effect using standard PST background variables */
-    text-shadow: 
-        0 0 3px var(--pst-color-background, #fff), 
-        0 0 6px var(--pst-color-background, #fff);
+/* Hide the title when it's empty to avoid unnecessary space/padding */
+.viewer-title:empty {
+    display: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Footer rendered below the canvas with a solid background */
+.viewer-container .viewer-footer {
+    background-color: var(--pst-color-background);
+}
+
+/* Ensure the toolbar has enough padding, especially when title is empty */
+.viewer-footer .viewer-toolbar {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
 }
 
 /* --- Dynamic Background Application --- */
