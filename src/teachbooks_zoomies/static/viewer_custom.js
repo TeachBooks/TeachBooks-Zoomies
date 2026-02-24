@@ -41,6 +41,17 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             e.stopPropagation();
 
+            // Build caption HTML once so both title() and viewed() can use it
+            let captionHTML = "";
+            const fig = target.closest('figure');
+            if (fig) {
+                const numberEl = fig.querySelector('.caption-number');
+                const textEl = fig.querySelector('.caption-text');
+                const numberText = numberEl ? numberEl.innerText : "";
+                const bodyHTML = textEl ? textEl.innerHTML : "";
+                captionHTML = (numberText + " " + bodyHTML).trim();
+            }
+
             // Dynamic Toolbar configuration
             const toolbarConfig = {};
             const defaultToolbar = (window.ViewerConfig && window.ViewerConfig.toolbar) || ["zoomIn", "zoomOut", "oneToOne", "reset"];
@@ -58,18 +69,9 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             const viewer = new Viewer(target, {
-                // A. CAPTION LOGIC
+                // A. CAPTION LOGIC — return plain text; HTML is injected in viewed()
                 title: function (image) {
-                    const figure = target.closest('figure');
-                    if (figure) {
-                        const numberEl = figure.querySelector('.caption-number');
-                        const textEl = figure.querySelector('.caption-text');
-                        const numberText = numberEl ? numberEl.innerText : "";
-                        const bodyHTML = textEl ? textEl.innerHTML : "";
-                        const fullCaption = (numberText + " " + bodyHTML).trim();
-                        if (fullCaption.length > 0) return fullCaption;
-                    }
-                    return ""; 
+                    return captionHTML.replace(/<[^>]*>/g, '');
                 },
 
                 // B. TOOLBAR
@@ -89,6 +91,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     captionHeight = viewer.footer ? viewer.footer.offsetHeight : 0;
                     if (viewer.canvas && captionHeight > 0) {
                         viewer.canvas.style.bottom = captionHeight + 'px';
+                    }
+                    // Inject HTML caption so links are rendered as real anchors
+                    if (captionHTML) {
+                        const titleEl = viewer.footer && viewer.footer.querySelector('.viewer-title');
+                        if (titleEl) titleEl.innerHTML = captionHTML;
                     }
                     applyBestFit(viewer, captionHeight);
                 },
