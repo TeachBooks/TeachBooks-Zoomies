@@ -65,8 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         const numberEl = figure.querySelector('.caption-number');
                         const textEl = figure.querySelector('.caption-text');
                         const numberText = numberEl ? numberEl.innerText : "";
-                        const bodyText = textEl ? textEl.innerText : "";
-                        const fullCaption = (numberText + " " + bodyText).trim();
+                        const bodyHTML = textEl ? textEl.innerHTML : "";
+                        const fullCaption = (numberText + " " + bodyHTML).trim();
                         if (fullCaption.length > 0) return fullCaption;
                     }
                     return ""; 
