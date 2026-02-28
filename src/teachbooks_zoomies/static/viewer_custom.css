@@ -36,10 +36,10 @@
 }
 
 /* 2. Image Background (for transparent images) */
-.viewer-container .viewer-canvas > img {
+.viewer-container .viewer-canvas img {
     background-color: var(--zoomies-img-bg) !important;
     padding: var(--zoomies-img-padding, 0) !important;
-    border-radius: var(--zoomies-img-rounded, 0) !important;
+    border-radius: var(--zoomies-img-rounded, 8) !important;
     
     /* Ensure padding and background are visible */
     box-sizing: content-box !important;
@@ -58,4 +58,16 @@
 /* Ensure the canvas itself is transparent */
 .viewer-canvas {
     background-color: transparent !important;
+}
+
+/*
+ * FIX: CSS `filter` on body (e.g. from teachbooks-accessibility high-contrast mode)
+ * creates a new containing block for position:fixed elements, pulling the viewer
+ * backdrop and container off-screen. The primary fix is in viewer_custom.js
+ * (inline !important beats any stylesheet !important). This rule is a fallback
+ * with matching specificity to the accessibility rules.
+ */
+html:not([data-theme=dark]) body.high-contrast.viewer-open,
+html[data-theme=dark] body.high-contrast.viewer-open {
+    filter: none !important;
 }

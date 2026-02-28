@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     ];
 
     const props_divs = [
-        "background",
+        // "background",
         "filter",
         "opacity",
         "mix-blend-mode",
@@ -195,7 +195,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Build a NESTED wrapper chain from the original ancestors
                     const ancestors = [];
                     let el = target.parentElement;
-                    while (el) { ancestors.push(el); el = el.parentElement; }
+                    // Stop before <body>/<html>: their filter/transform would be
+                    // double-applied since the viewer canvas is already inside them.
+                    while (el && el !== document.body && el !== document.documentElement) {
+                        ancestors.push(el);
+                        el = el.parentElement;
+                    }
                     // We want the outermost ancestor to be the outer wrapper;
                     // buildNestedFromAncestors expects ancestors in DOM order from nearest -> farthest
                     // but it wraps in that order so the last becomes the outermost—this is fine.
@@ -211,12 +216,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
                     applyBestFit(viewer, captionHeight);
+
+                    // Re-apply body filter (e.g. high-contrast) directly to the viewer
+                    // container so the effect is preserved without breaking position:fixed.
+                    if (bodyFilter && bodyFilter !== 'none') {
+                        viewer.viewer.style.setProperty('filter', bodyFilter, 'important');
+                    }
                 },
 
                 hidden: function() {
+                    document.body.style.setProperty('transition', 'none', 'important');
+                    document.body.style.removeProperty('filter');
+                    void document.body.offsetWidth;
+                    document.body.style.removeProperty('transition');
                     viewer.destroy();
                 }
             });
+
+            // Capture body filter (e.g. high-contrast) before neutralizing it,
+            // so we can re-apply it to the viewer container instead.
+            const bodyFilter = window.getComputedStyle(document.body).filter;
+
+            // CSS filter on body (e.g. high-contrast mode) creates a new containing
+            // block for position:fixed elements, breaking the viewer layout.
+            // Suppress the body filter transition first so there's no intermediate
+            // non-none value that would still break position:fixed during the animation.
+            // Inline !important beats any stylesheet !important regardless of specificity.
+            document.body.style.setProperty('transition', 'none', 'important');
+            document.body.style.setProperty('filter', 'none', 'important');
+            void document.body.offsetWidth; // force reflow so both changes apply synchronously
+            document.body.style.removeProperty('transition');
 
             viewer.show();
         }
