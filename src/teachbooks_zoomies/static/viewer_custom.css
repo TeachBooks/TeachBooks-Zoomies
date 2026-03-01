@@ -55,3 +55,11 @@
 .viewer-canvas {
     background-color: transparent !important;
 }
+
+html:not([data-theme=dark]) body.high-contrast.viewer-open {
+    filter: none !important;
+}
+
+html[data-theme=dark] body.high-contrast.viewer-open {
+    filter: none !important;
+}

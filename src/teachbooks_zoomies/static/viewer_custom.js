@@ -151,6 +151,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
+            // Check if high-contrast mode is enabled
+            const hc = document.body.classList.contains('high-contrast');
+            let bodyFilter = 'none';
+            if (hc) {
+                // store filter in high-contrast mode so we can re-apply it to the viewer container later
+                bodyFilter = window.getComputedStyle(document.body).filter;
+                void document.body.offsetWidth; // force reflow so both changes apply synchronously
+            };
+
             const viewer = new Viewer(target, {
                 // A. CAPTION LOGIC — return plain text; HTML is injected in viewed()
                 title: function (image) {
@@ -195,7 +204,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Build a NESTED wrapper chain from the original ancestors
                     const ancestors = [];
                     let el = target.parentElement;
-                    while (el) { ancestors.push(el); el = el.parentElement; }
+                    while (el) {
+                        ancestors.push(el);
+                        el = el.parentElement;
+                    }
                     // We want the outermost ancestor to be the outer wrapper;
                     // buildNestedFromAncestors expects ancestors in DOM order from nearest -> farthest
                     // but it wraps in that order so the last becomes the outermost—this is fine.
@@ -211,9 +223,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
                     applyBestFit(viewer, captionHeight);
+
+                    // Re-apply body filter (e.g. high-contrast) directly to the viewer
+                    // container so the effect is preserved without breaking position:fixed.
+                    if (hc) {
+                        viewer.canvas.style.setProperty('filter', bodyFilter, 'important');
+                    }
                 },
 
                 hidden: function() {
+                    if (hc) {
+                        void document.body.offsetWidth;
+                    };
                     viewer.destroy();
                 }
             });
