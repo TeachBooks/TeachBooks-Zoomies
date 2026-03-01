@@ -8,8 +8,8 @@ def setup(app):
     app.add_config_value('zoomies_cdn_js', 'https://unpkg.com/viewerjs/dist/viewer.min.js', 'html')
     app.add_config_value('zoomies_caption_color_light', 'var(--pst-color-text-base)', 'html')
     app.add_config_value('zoomies_caption_color_dark', 'var(--pst-color-text-base)', 'html')
-    app.add_config_value('zoomies_bg_color_light', 'rgba(255, 255, 255, 0.95)', 'html')
-    app.add_config_value('zoomies_bg_color_dark', '#333', 'html')
+    app.add_config_value('zoomies_bg_color_light', 'color-mix(in srgb, var(--pst-color-background) 95%, transparent)', 'html')
+    app.add_config_value('zoomies_bg_color_dark', 'color-mix(in srgb, var(--pst-color-background) 95%, transparent)', 'html')
     app.add_config_value('zoomies_toolbar', ["zoomIn", "zoomOut", "oneToOne", "reset"], 'html')
     app.add_config_value('zoomies_best_fit', 70, 'html')
 
