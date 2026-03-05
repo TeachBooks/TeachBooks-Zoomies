@@ -38,6 +38,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const target = e.target.closest(selector);
 
         if (target) {
+            // Do not trigger viewer if the image (or its container) has the 'no-zoomies' class
+            if (target.closest('.no-zoomies')) {
+                return;
+            }
+
             e.preventDefault();
             e.stopPropagation();
 
