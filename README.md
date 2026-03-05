@@ -81,3 +81,33 @@ zoomies_selector = ".bd-article img"
 zoomies_best_fit = 80
 zoomies_invert_colors = True
 ```
+
+## Disabling Zoom for Specific Images
+
+If you want to prevent specific images from being zoomable, you can add the class `no-zoomies` to the image itself or to any of its parent containers.
+
+### 1. In Markdown (MyST Directive)
+This is the recommended way for Jupyter Books.
+
+````markdown
+```{image} path/to/image.png
+:class: no-zoomies
+```
+````
+
+### 2. Using an HTML Tag
+If you are writing raw HTML in your documentation.
+
+```html
+<img src="path/to/image.png" class="no-zoomies">
+```
+
+### 3. Using a Parent Container
+Useful for disabling zoom on a group of images at once.
+
+```html
+<div class="no-zoomies">
+  ![This image won't zoom](image1.png)
+  ![This one won't either](image2.png)
+</div>
+```
