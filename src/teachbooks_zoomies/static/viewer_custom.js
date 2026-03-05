@@ -1,5 +1,88 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+    const props_img = [
+        "background",
+        "border",
+        "border-block",
+        "border-inline",
+        "border-image",
+        "outline",
+        "box-shadow",
+        "filter",
+        "opacity",
+        "mix-blend-mode",
+        "background-blend-mode",
+        "clip-path",
+        "mask",
+        "transform",
+        "transform-origin",
+        "transform-style",
+        "perspective",
+        "perspective-origin",
+        "backface-visibility",
+        "isolation",
+        "backdrop-filter",
+        "cursor",
+        "pointer-events",
+        "user-select",
+        "appearance",
+        "accent-color",
+        "caret-color",
+        "scrollbar-color",
+        "scrollbar-width"
+    ];
+
+    const props_divs = [
+        "background",
+        "filter",
+        "opacity",
+        "mix-blend-mode",
+        "background-blend-mode",
+        "transform",
+        "transform-origin",
+        "transform-style",
+        "backface-visibility",
+        "isolation",
+        "backdrop-filter",
+    ];
+
+    
+    function extractSubset(computed, props) {
+        const out = {};
+        for (const p of props) {
+            out[p] = computed.getPropertyValue(p);
+        }
+        return out;
+    }
+
+    
+    // Helper: apply a subset object as inline styles
+    function applySubsetInline(el, subset) {
+        for (const [k, v] of Object.entries(subset)) {
+            if (v && v.trim() !== "" && v !== "none") {
+                el.style.setProperty(k, v);
+            }
+        }
+    }
+
+    // Helper: build nested wrappers from ancestor list (outermost last)
+    function buildNestedFromAncestors(ancestors, leaf, props) {
+        let current = leaf;
+        for (const anc of ancestors) {
+            const cs = getComputedStyle(anc);
+            const subset = extractSubset(cs, props);
+            const wrapper = document.createElement("div");
+            // neutralize layout influence
+            wrapper.style.margin = "0";
+            wrapper.style.padding = "0";
+            // no explicit width/height per your requirement
+            applySubsetInline(wrapper, subset);
+            wrapper.appendChild(current);
+            current = wrapper;
+        }
+        return current;
+    }
+
     // --- 1. CONFIGURATION ---
     // Read the config injected by our Python extension
     const selector = (window.ViewerConfig && window.ViewerConfig.selector) || '.bd-article img';
@@ -73,6 +156,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
+            // Check if high-contrast mode is enabled
+            const hc = document.body.classList.contains('high-contrast');
+            let bodyFilter = 'none';
+            if (hc) {
+                // store filter in high-contrast mode so we can re-apply it to the viewer container later
+                bodyFilter = window.getComputedStyle(document.body).filter;
+                void document.body.offsetWidth; // force reflow so both changes apply synchronously
+            };
+
             const viewer = new Viewer(target, {
                 // A. CAPTION LOGIC — return plain text; HTML is injected in viewed()
                 title: function (image) {
@@ -108,10 +200,46 @@ document.addEventListener("DOMContentLoaded", function() {
                         const titleEl = viewer.footer && viewer.footer.querySelector('.viewer-title');
                         if (titleEl) titleEl.innerHTML = captionHTML;
                     }
+                    
+                    // Apply SAME visual subset from original image to the actual viewer image
+                    const originalCS = getComputedStyle(target);
+                    const originalSubset = extractSubset(originalCS, props_img);
+                    applySubsetInline(viewer.image, originalSubset);
+
+                    // Build a NESTED wrapper chain from the original ancestors
+                    const ancestors = [];
+                    let el = target.parentElement;
+                    while (el) {
+                        ancestors.push(el);
+                        el = el.parentElement;
+                    }
+                    // We want the outermost ancestor to be the outer wrapper;
+                    // buildNestedFromAncestors expects ancestors in DOM order from nearest -> farthest
+                    // but it wraps in that order so the last becomes the outermost—this is fine.
+
+                    const nested = buildNestedFromAncestors(ancestors, viewer.image, props_divs);
+
+                    // Replace viewer canvas content with our nested reconstruction
+                    if (viewer.canvas) {
+                        // preserve the canvas node; just replace its children
+                        while (viewer.canvas.firstChild) viewer.canvas.removeChild(viewer.canvas.firstChild);
+                        viewer.canvas.appendChild(nested);
+                    }
+
+
                     applyBestFit(viewer, captionHeight);
+
+                    // Re-apply body filter (e.g. high-contrast) directly to the viewer
+                    // container so the effect is preserved without breaking position:fixed.
+                    if (hc) {
+                        viewer.canvas.style.setProperty('filter', bodyFilter, 'important');
+                    }
                 },
 
                 hidden: function() {
+                    if (hc) {
+                        void document.body.offsetWidth;
+                    };
                     viewer.destroy();
                 }
             });
