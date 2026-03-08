@@ -53,8 +53,8 @@ TeachBooks Zoomies works out-of-the-box with PyData-based themes (like the Jupyt
 | `zoomies_selector` | `".bd-article img"` | CSS selector for images that should be zoomable. |
 | `zoomies_best_fit` | `70` | Initial zoom level as a % of the viewport (1-100). |
 | `zoomies_toolbar` | `["zoomIn", "zoomOut", "oneToOne", "reset"]` | Tools to show. Options: `zoomIn`, `zoomOut`, `oneToOne`, `reset`, `prev`, `play`, `next`, `rotateLeft`, `rotateRight`, `flipHorizontal`, `flipVertical`. |
-| `zoomies_bg_color_light` | `"rgba(255, 255, 255, 0.95)"` | Viewer background color in light mode. |
-| `zoomies_bg_color_dark` | `"#333"` | Viewer background color in dark mode. |
+| `zoomies_bg_color_light` | `"color-mix(in srgb, var(--pst-color-background) 95%, transparent)"` | Viewer background color in light mode. |
+| `zoomies_bg_color_dark` | `"color-mix(in srgb, var(--pst-color-background) 95%, transparent)"` | Viewer background color in dark mode. |
 | `zoomies_caption_color_light`| `"var(--pst-color-text-base)"` | Caption text color in light mode. |
 | `zoomies_caption_color_dark` | `"var(--pst-color-text-base)"` | Caption text color in dark mode. |
 | `zoomies_cdn_css` | `"...viewer.min.css"` | URL for the Viewer.js CSS file. |
