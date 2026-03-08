@@ -1,3 +1,9 @@
+/* root variables for dynamic theming */
+:root {
+    --zoomies-img-padding: 0;
+    --zoomies-img-rounded: 0;
+}
+
 /* --- Base Styles for Caption --- */
 .viewer-title {
     font-size: 1.25rem !important;

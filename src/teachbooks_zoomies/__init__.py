@@ -12,6 +12,9 @@ def setup(app):
     app.add_config_value('zoomies_bg_color_dark', 'color-mix(in srgb, var(--pst-color-background) 95%, transparent)', 'html')
     app.add_config_value('zoomies_toolbar', ["zoomIn", "zoomOut", "oneToOne", "reset"], 'html')
     app.add_config_value('zoomies_best_fit', 70, 'html')
+    # decrepated options - might be removed in future versions - have no influence on the current implementation but are kept for backward compatibility
+    app.add_config_value('zoomies_bg_apply_to_img', True, 'html')
+    app.add_config_value('zoomies_invert_colors', False, 'html')
 
     # 2. Hook: Inject assets into the HTML
     app.connect('builder-inited', on_builder_inited)
@@ -43,40 +46,29 @@ def inject_assets(app, pagename, templatename, context, doctree):
 
     # C. Inject Theme Colors as CSS Variables
     # We define the logic here and the mapping in the CSS file.
-    
-    # Defaults/Light mode
-    backdrop_bg_light = app.config.zoomies_bg_color_light
-    
-    # Dark mode
-    backdrop_bg_dark = app.config.zoomies_bg_color_dark
-
-    img_padding = "0"
-    img_rounded = "0"
 
     style = f"""
     :root {{
         --zoomies-caption-color: {app.config.zoomies_caption_color_light};
-        --zoomies-backdrop-bg: {backdrop_bg_light};
-        --zoomies-img-padding: {img_padding};
-        --zoomies-img-rounded: {img_rounded};
+        --zoomies-backdrop-bg: {app.config.zoomies_bg_color_light};
     }}
 
     /* Robust dark mode detection */
     @media (prefers-color-scheme: dark) {{
         :root {{
             --zoomies-caption-color: {app.config.zoomies_caption_color_dark};
-            --zoomies-backdrop-bg: {backdrop_bg_dark};
+            --zoomies-backdrop-bg: {app.config.zoomies_bg_color_dark};
         }}
     }}
 
     html[data-theme="dark"], body[data-theme="dark"], [data-theme="dark"], .theme-dark, .dark {{
         --zoomies-caption-color: {app.config.zoomies_caption_color_dark} !important;
-        --zoomies-backdrop-bg: {backdrop_bg_dark} !important;
+        --zoomies-backdrop-bg: {app.config.zoomies_bg_color_dark} !important;
     }}
 
     html[data-theme="light"], body[data-theme="light"], [data-theme="light"], .theme-light, .light {{
         --zoomies-caption-color: {app.config.zoomies_caption_color_light} !important;
-        --zoomies-backdrop-bg: {backdrop_bg_light} !important;
+        --zoomies-backdrop-bg: {app.config.zoomies_bg_color_light} !important;
     }}
     """
     
