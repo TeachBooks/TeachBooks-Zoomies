@@ -57,8 +57,8 @@ TeachBooks Zoomies works out-of-the-box with PyData-based themes (like the Jupyt
 | `zoomies_bg_color_dark` | `"color-mix(in srgb, var(--pst-color-background) 95%, transparent)"` | Viewer background color in dark mode. |
 | `zoomies_caption_color_light`| `"var(--pst-color-text-base)"` | Caption text color in light mode. |
 | `zoomies_caption_color_dark` | `"var(--pst-color-text-base)"` | Caption text color in dark mode. |
-| `zoomies_cdn_css` | `"...viewer.min.css"` | URL for the Viewer.js CSS file. |
-| `zoomies_cdn_js` | `"...viewer.min.js"` | URL for the Viewer.js JS file. |
+| `zoomies_cdn_css` | `"https://unpkg.com/viewerjs/dist/viewer.min.css"` | URL for the Viewer.js CSS file. |
+| `zoomies_cdn_js` | `"https://unpkg.com/viewerjs/dist/viewer.min.js"` | URL for the Viewer.js JS file. |
 
 ### Example `_config.yml` (Jupyter Book)
 
