@@ -157,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (hc) {
                 // store filter in high-contrast mode so we can re-apply it to the viewer container later
                 bodyFilter = window.getComputedStyle(document.body).filter;
-                void document.body.offsetWidth; // force reflow so both changes apply synchronously
             };
 
             const viewer = new Viewer(target, {
@@ -232,9 +231,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
 
                 hidden: function() {
-                    if (hc) {
-                        void document.body.offsetWidth;
-                    };
                     viewer.destroy();
                 }
             });

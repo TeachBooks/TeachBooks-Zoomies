@@ -35,7 +35,7 @@
     background-color: var(--zoomies-backdrop-bg) !important;
 }
 
-/* 2. Image Background (for transparent images) */
+/* 2. Image Styles */
 .viewer-container .viewer-canvas img {
     padding: var(--zoomies-img-padding, 0) !important;
     border-radius: var(--zoomies-img-rounded, 0) !important;
