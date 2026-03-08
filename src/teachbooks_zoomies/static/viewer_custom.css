@@ -1,3 +1,9 @@
+/* root variables for dynamic theming */
+:root {
+    --zoomies-img-padding: 0;
+    --zoomies-img-rounded: 0;
+}
+
 /* --- Base Styles for Caption --- */
 .viewer-title {
     font-size: 1.25rem !important;
@@ -35,9 +41,8 @@
     background-color: var(--zoomies-backdrop-bg) !important;
 }
 
-/* 2. Image Background (for transparent images) */
-.viewer-container .viewer-canvas > img {
-    background-color: var(--zoomies-img-bg) !important;
+/* 2. Image Styles */
+.viewer-container .viewer-canvas img {
     padding: var(--zoomies-img-padding, 0) !important;
     border-radius: var(--zoomies-img-rounded, 0) !important;
     
@@ -50,12 +55,17 @@
     flex-shrink: 0 !important;
     min-width: 0 !important;
     min-height: 0 !important;
-
-    /* Extra visibility: subtle border in dark mode if it's the image background */
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.05) !important;
 }
 
 /* Ensure the canvas itself is transparent */
 .viewer-canvas {
     background-color: transparent !important;
+}
+
+html:not([data-theme=dark]) body.high-contrast.viewer-open {
+    filter: none !important;
+}
+
+html[data-theme=dark] body.high-contrast.viewer-open {
+    filter: none !important;
 }
