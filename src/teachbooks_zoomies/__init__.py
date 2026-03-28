@@ -3,7 +3,7 @@ import json
 
 def setup(app):
     # 1. Register Configuration Options (with defaults)
-    app.add_config_value('zoomies_selector', '.bd-article img', 'html')
+    app.add_config_value('zoomies_selector', '.bd-article img, #pst-secondary-sidebar img', 'html')
     app.add_config_value('zoomies_cdn_css', 'https://unpkg.com/viewerjs/dist/viewer.min.css', 'html')
     app.add_config_value('zoomies_cdn_js', 'https://unpkg.com/viewerjs/dist/viewer.min.js', 'html')
     app.add_config_value('zoomies_caption_color_light', 'var(--pst-color-text-base)', 'html')

@@ -50,7 +50,7 @@ TeachBooks Zoomies works out-of-the-box with PyData-based themes (like the Jupyt
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `zoomies_selector` | `".bd-article img"` | CSS selector for images that should be zoomable. |
+| `zoomies_selector` | `".bd-article img, #pst-secondary-sidebar img"` | CSS selector for images that should be zoomable. |
 | `zoomies_best_fit` | `70` | Initial zoom level as a % of the viewport (1-100). |
 | `zoomies_toolbar` | `["zoomIn", "zoomOut", "oneToOne", "reset"]` | Tools to show. Options: `zoomIn`, `zoomOut`, `oneToOne`, `reset`, `prev`, `play`, `next`, `rotateLeft`, `rotateRight`, `flipHorizontal`, `flipVertical`. |
 | `zoomies_bg_color_light` | `"color-mix(in srgb, var(--pst-color-background) 95%, transparent)"` | Viewer background color in light mode. |
@@ -65,7 +65,7 @@ TeachBooks Zoomies works out-of-the-box with PyData-based themes (like the Jupyt
 ```yaml
 sphinx:
   config:
-    zoomies_selector: ".bd-article img, .my-custom-image-class"
+    zoomies_selector: ".bd-article img, #pst-secondary-sidebar img, .my-custom-image-class"
     zoomies_best_fit: 85
     zoomies_toolbar: ["zoomIn", "zoomOut", "reset", "rotateRight"]
 ```
@@ -73,7 +73,7 @@ sphinx:
 ### Example `conf.py` (Sphinx)
 
 ```python
-zoomies_selector = ".bd-article img"
+zoomies_selector = ".bd-article img, #pst-secondary-sidebar img"
 zoomies_best_fit = 80
 ```
 

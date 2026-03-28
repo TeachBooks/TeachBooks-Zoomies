@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // --- 1. CONFIGURATION ---
     // Read the config injected by our Python extension
-    const selector = (window.ViewerConfig && window.ViewerConfig.selector) || '.bd-article img';
+    const selector = (window.ViewerConfig && window.ViewerConfig.selector) || '.bd-article img, #pst-secondary-sidebar img';
 
     // --- 2. REUSABLE FIT LOGIC ---
     // Scales image to a configurable percentage of screen width or height (whichever fits best).
