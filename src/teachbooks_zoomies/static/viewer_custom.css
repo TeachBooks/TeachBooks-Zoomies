@@ -10,6 +10,8 @@
     line-height: 1.4;
     font-weight: 500;
     white-space: normal;
+    /* Multi-line captions (e.g. with <br>) would otherwise align left inside the shrink-wrapped box */
+    text-align: center;
     padding: 6px 16px 10px !important;
     opacity: 1 !important;
     transition: color 0.3s ease;
