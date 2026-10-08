@@ -129,15 +129,20 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             e.stopPropagation();
 
-            // Build caption HTML once so both title() and viewed() can use it
+            // Build caption once so both title() and viewed() can use it.
+            // innerText reflects what is actually rendered, so hidden placeholders
+            // (e.g. an invisible &nbsp;) yield no text and are not copied as HTML.
             let captionHTML = "";
+            let captionText = "";
             const fig = target.closest('figure');
             if (fig) {
                 const numberEl = fig.querySelector('.caption-number');
                 const textEl = fig.querySelector('.caption-text');
-                const numberText = numberEl ? numberEl.innerText : "";
-                const bodyHTML = textEl ? textEl.innerHTML : "";
-                captionHTML = (numberText + " " + bodyHTML).trim();
+                const numberText = numberEl ? numberEl.innerText.trim() : "";
+                const visibleText = textEl ? textEl.innerText.trim() : "";
+                const bodyHTML = visibleText ? textEl.innerHTML : "";
+                captionHTML = [numberText, bodyHTML].filter(Boolean).join(" ");
+                captionText = [numberText, visibleText].filter(Boolean).join(" ");
             }
 
             // Dynamic Toolbar configuration
@@ -167,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const viewer = new Viewer(target, {
                 // A. CAPTION LOGIC — return plain text; HTML is injected in viewed()
                 title: function (image) {
-                    return captionHTML.replace(/<[^>]*>/g, '');
+                    return captionText;
                 },
 
                 // B. TOOLBAR
@@ -194,12 +199,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (viewer.canvas && captionHeight > 0) {
                         viewer.canvas.style.bottom = captionHeight + 'px';
                     }
-                    // Inject HTML caption so links are rendered as real anchors
-                    if (captionHTML) {
-                        const titleEl = viewer.footer && viewer.footer.querySelector('.viewer-title');
-                        if (titleEl) titleEl.innerHTML = captionHTML;
-                    }
-                    
+                    // Viewer.js writes the (HTML-escaped) title in its own 'viewed' listener, which
+                    // runs after this callback. Defer so our HTML caption (with real links) wins.
+                    setTimeout(() => {
+                        if (captionHTML && viewer.title) viewer.title.innerHTML = captionHTML;
+                    }, 0);
+
                     // Apply SAME visual subset from original image to the actual viewer image
                     const originalCS = getComputedStyle(target);
                     const originalSubset = extractSubset(originalCS, props_img);
