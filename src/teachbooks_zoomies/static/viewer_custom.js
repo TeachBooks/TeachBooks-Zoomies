@@ -200,10 +200,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         viewer.canvas.style.bottom = captionHeight + 'px';
                     }
                     // Viewer.js writes the (HTML-escaped) title in its own 'viewed' listener, which
-                    // runs after this callback. Defer so our HTML caption (with real links) wins.
-                    setTimeout(() => {
+                    // runs right after this callback. A microtask runs after that write but before
+                    // the browser paints, so our HTML caption (with real links) shows without flicker.
+                    queueMicrotask(() => {
                         if (captionHTML && viewer.title) viewer.title.innerHTML = captionHTML;
-                    }, 0);
+                    });
 
                     // Apply SAME visual subset from original image to the actual viewer image
                     const originalCS = getComputedStyle(target);
