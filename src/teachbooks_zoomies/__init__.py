@@ -33,7 +33,7 @@ def on_builder_inited(app):
 
 def inject_assets(app, pagename, templatename, context, doctree):
     # A. Inject CDN Links
-    app.add_css_file(app.config.zoomies_cdn_css)
+    app.add_css_file(app.config.zoomies_cdn_css, crossorigin='anonymous')
     app.add_js_file(app.config.zoomies_cdn_js)
 
     # B. Inject Configuration Variable
